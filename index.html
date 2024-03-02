@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 style="color: black;">SGPA CALCULATOR</h1>
+        <br> <br>
+        <form id="subjectForm">
+            <label for="numSubjects" id="subjectlabel">Number of Subjects:</label>
+            <input type="number" id="numSubjects" name="numSubjects" min="1" required>
+            <button type="button" onclick="generateInputs()">Submit</button>
+        </form>
+        <div id="subjectInputs"></div>
+        <br>
+        <button type="submit" id="btn" style="display: none;" onclick="computeGPA()">Submit</button>
+        <br><br>
+
+    </div>
+
+
+    <script>
+        var numSubjects;
+        function generateInputs() {
+            numSubjects = parseInt(document.getElementById("numSubjects").value);
+            var subjectInputsDiv = document.getElementById("subjectInputs");
+            subjectInputsDiv.innerHTML = ""; // Clear previous inputs
+
+            for (var i = 1; i <= numSubjects; i++) {
+                var subjectDiv = document.createElement("div");
+                subjectDiv.innerHTML = `
+                    <label for="cs${i}">Subject ${i} Credit:</label>
+                    <select name="cs${i}" id="cs${i}">   <!-- cs is credit select-->
+                        <option value="1">1.0</option>
+                        <option value="1.5">1.5</option>
+                        <option value="2">2.0</option>
+                        <option value="2.5">2.5</option>
+                        <option value="3">3.0</option>
+                        <option value="3.5">3.5</option>
+                        <option value="4">4.0</option  >
+                        <option value="4.5">4.5</option>
+                        <option value="5">5.0</option>
+                    </select>
+                    <label for="grade${i}">Grades:</label>
+                    <select name="grade${i}" id="grade${i}">
+                        <option value="10">S</option>
+                        <option value="9">A</option>
+                        <option value="8">B</option>
+                        <option value="7">C</option>
+                        <option value="5">D</option>
+                        <option value="4">E</option>
+                        <option value="0">F</option>
+                    </select><br><br>`;
+                subjectInputsDiv.appendChild(subjectDiv);
+            }
+            document.getElementById('subjectForm').innerHTML = "";
+
+            document.getElementById("btn").style.display = "inline";
+        }
+        function computeGPA() {
+            let creditpoints = 0, gradepoints = 0, sum = 0, creditsum = 0;
+            console.log(numSubjects);
+
+            const arr = new Array();
+            for (var i = 1; i <= numSubjects; i++) {
+                var gradeselect = document.getElementById(`grade${i}`);
+                gradepoints = gradeselect.value;
+                var creditselect = document.getElementById(`cs${i}`);
+                creditpoints = creditselect.value;
+                creditsum += parseFloat(creditpoints);
+                sum += (gradepoints * creditpoints);
+
+                arr.push({ gradepoints, creditpoints });
+
+            }
+            let result = sum / creditsum;
+            console.log(creditsum);
+            console.log(sum);
+
+            var subjectInputsDiv = document.getElementById("subjectInputs");
+            subjectInputsDiv.innerHTML = "";
+            document.getElementById('btn').style.display = "none";
+            var ResultDiv = document.createElement("div");
+            ResultDiv.innerHTML = ` <h1>Congratulations</h1>
+                <img src="medal.jpg" alt="img">
+               
+<h3>Your gpa is ${result}</h3>
+<button onClick="window.location.href=window.location.href">Home Page</button>`;
+            subjectInputsDiv.appendChild(ResultDiv);
+            //     console.log(creditsum);
+            //     console.log(sum);
+            //    console.log("Your gpa is " );
+            //    console.log(sum/creditsum);
+
+
+        }
+
+    </script>
+</body>
+
+</html>
